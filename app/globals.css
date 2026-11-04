@@ -1,0 +1,14 @@
+@import "tailwindcss";
+@plugin "daisyui" {
+  themes: light --default, dark --prefersdark;
+}
+
+.section-title {
+  @apply text-3xl md:text-4xl font-bold text-center mb-2;
+}
+.section-sub {
+  @apply text-center opacity-70 mb-10 max-w-2xl mx-auto;
+}
+.btn-brand {
+  @apply btn btn-primary text-white;
+}
