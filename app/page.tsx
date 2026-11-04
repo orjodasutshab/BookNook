@@ -52,3 +52,38 @@ export default async function Home() {
         </div>
       </section>
 
+      <section className="bg-base-200 py-16">
+        <div className="max-w-7xl mx-auto px-4">
+          <h2 className="section-title">How Borrowing Works</h2>
+          <p className="section-sub">Three easy steps from the shelf to your hands.</p>
+          <div className="grid gap-6 md:grid-cols-3">
+            {steps.map((s) => (
+              <div key={s.n} className="card bg-base-100 shadow-sm">
+                <div className="card-body items-center text-center">
+                  <div className="w-14 h-14 rounded-full bg-primary text-white flex items-center justify-center text-2xl font-bold">{s.n}</div>
+                  <h3 className="card-title mt-2">{s.t}</h3>
+                  <p className="opacity-70">{s.d}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="max-w-7xl mx-auto px-4 py-16">
+        <h2 className="section-title">Top Categories</h2>
+        <p className="section-sub">Find your next read by choosing what you like.</p>
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+          {cats.map((c) => (
+            <Link key={c.name} href="/books" className="card bg-base-100 border border-base-300 hover:border-primary hover:shadow-md transition">
+              <div className="card-body items-center text-center p-6">
+                <div className="text-4xl">{c.icon}</div>
+                <h3 className="font-semibold">{c.name}</h3>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+    </>
+  );
+}
