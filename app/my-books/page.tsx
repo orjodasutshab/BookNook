@@ -72,3 +72,22 @@ export default function MyBooks() {
         </div>
       )}
 
+      {editing && (
+        <dialog className="modal modal-open">
+          <div className="modal-box max-w-xl">
+            <h3 className="font-bold text-xl mb-4">Edit Book</h3>
+            <BookForm
+              initial={editing}
+              submitLabel="Save Changes"
+              onSubmit={async (data) => {
+                await api(`/books/${editing._id}`, { method: "PATCH", body: JSON.stringify(data) }, true);
+                toast.success("Book updated successfully!");
+                setEditing(null);
+                await load();
+              }}
+            />
+            <div className="modal-action"><button className="btn" onClick={() => setEditing(null)}>Close</button></div>
+          </div>
+        </dialog>
+      )}
+
