@@ -49,3 +49,30 @@ export default function BookDetails({ params }: { params: Promise<{ id: string }
     }
   };
 
+  if (loading || isPending) return <Spinner />;
+  if (!book) return <p className="text-center py-24 opacity-70">This book could not be found.</p>;
+
+  const unavailable = book.availableCopies <= 0;
+
+  return (
+    <section className="max-w-6xl mx-auto px-4 py-12">
+      <Title name={book.title} />
+      <div className="grid gap-10 md:grid-cols-2 items-start">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={book.image} alt={book.title} className="w-full max-h-[560px] object-cover rounded-2xl shadow-lg" />
+        <div>
+          <span className="badge badge-primary badge-outline">{book.category}</span>
+          <h1 className="text-3xl md:text-4xl font-bold mt-3">{book.title}</h1>
+          <p className="text-lg opacity-70 mt-1">by {book.author}</p>
+          <p className="mt-6 leading-relaxed">{book.description}</p>
+          <div className="mt-6 space-y-1 opacity-80">
+            <p><b>Added by:</b> {book.addedBy.name} ({book.addedBy.email})</p>
+            <p><b>Added on:</b> {fmtDate(book.createdAt)}</p>
+            <p><b>Copies available:</b> {book.availableCopies} / {book.totalCopies}</p>
+          </div>
+          <button onClick={openBorrow} disabled={unavailable} className="btn btn-primary text-white mt-8">
+            {unavailable ? "Not Available" : "Borrow This Book"}
+          </button>
+        </div>
+      </div>
+
