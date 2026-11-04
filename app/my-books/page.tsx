@@ -91,3 +91,20 @@ export default function MyBooks() {
         </dialog>
       )}
 
+      {deleting && (
+        <dialog className="modal modal-open">
+          <div className="modal-box">
+            <h3 className="font-bold text-lg">Delete this book?</h3>
+            <p className="py-4">“{deleting.title}” will be removed permanently. This cannot be undone.</p>
+            <div className="modal-action">
+              <button className="btn" onClick={() => setDeleting(null)}>Cancel</button>
+              <button className="btn btn-error text-white" disabled={delBusy} onClick={confirmDelete}>
+                {delBusy ? <span className="loading loading-spinner" /> : "Yes, Delete"}
+              </button>
+            </div>
+          </div>
+        </dialog>
+      )}
+    </section>
+  );
+}
