@@ -1,2 +1,9 @@
 node_modules
+.next
 .env
+.env.local
+next-env.d.ts
+*.tsbuildinfo
+.vercel
+fix-client-repo.bat
+fix-client-repo2.bat
