@@ -76,3 +76,32 @@ export default function BookDetails({ params }: { params: Promise<{ id: string }
         </div>
       </div>
 
+      {open && session?.user && (
+        <dialog className="modal modal-open">
+          <form onSubmit={confirmBorrow} className="modal-box space-y-4">
+            <h3 className="font-bold text-xl">Borrow “{book.title}”</h3>
+            <label className="block">
+              <span className="label-text">Name</span>
+              <input readOnly value={session.user.name} className="input input-bordered w-full mt-1" />
+            </label>
+            <label className="block">
+              <span className="label-text">Email</span>
+              <input readOnly value={session.user.email} className="input input-bordered w-full mt-1" />
+            </label>
+            <label className="block">
+              <span className="label-text">Return date (up to 30 days)</span>
+              <input type="date" required min={minDate} max={maxDate} value={returnDate}
+                onChange={(e) => setReturnDate(e.target.value)} className="input input-bordered w-full mt-1" />
+            </label>
+            <div className="modal-action">
+              <button type="button" className="btn" onClick={() => setOpen(false)}>Cancel</button>
+              <button type="submit" disabled={busy} className="btn btn-primary text-white">
+                {busy ? <span className="loading loading-spinner" /> : "Confirm Borrow"}
+              </button>
+            </div>
+          </form>
+        </dialog>
+      )}
+    </section>
+  );
+}
