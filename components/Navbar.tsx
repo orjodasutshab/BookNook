@@ -53,3 +53,54 @@ export default function Navbar() {
     </li>
   ));
 
+  return (
+    <div className="navbar bg-base-100 shadow-sm sticky top-0 z-50 px-4 md:px-8">
+      <div className="navbar-start">
+        <div className="dropdown">
+          <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" />
+            </svg>
+          </div>
+          <ul tabIndex={0} className="menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-52 p-2 shadow">
+            {navItems}
+          </ul>
+        </div>
+        <Logo />
+      </div>
+      <div className="navbar-center hidden lg:flex">
+        <ul className="menu menu-horizontal px-1">{navItems}</ul>
+      </div>
+      <div className="navbar-end gap-2">
+        <button onClick={toggleTheme} className="btn btn-ghost btn-circle" aria-label="Toggle theme">
+          {theme === "light" ? "🌙" : "☀️"}
+        </button>
+        {isPending ? (
+          <span className="loading loading-spinner loading-sm"></span>
+        ) : user ? (
+          <div className="dropdown dropdown-end">
+            <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
+              <div className="w-10 rounded-full ring ring-primary ring-offset-2 ring-offset-base-100">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={user.image || `https://api.dicebear.com/9.x/initials/svg?seed=${encodeURIComponent(user.name)}`}
+                  alt={user.name}
+                />
+              </div>
+            </div>
+            <ul tabIndex={0} className="menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-56 p-2 shadow">
+              <li className="px-3 py-2 font-semibold pointer-events-none">{user.name}</li>
+              <li><Link href="/profile">My Profile</Link></li>
+              <li><button onClick={logout}>Logout</button></li>
+            </ul>
+          </div>
+        ) : (
+          <>
+            <Link href="/login" className="btn btn-outline btn-primary btn-sm md:btn-md">Login</Link>
+            <Link href="/register" className="btn btn-primary text-white btn-sm md:btn-md hidden sm:inline-flex">Register</Link>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
