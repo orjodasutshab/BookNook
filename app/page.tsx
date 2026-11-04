@@ -30,3 +30,25 @@ const cats = [
   { name: "Others", icon: "✨" },
 ];
 
+export default async function Home() {
+  const books = await getLatest();
+  return (
+    <>
+      <Title name="Home" />
+      <Hero />
+
+      <section className="max-w-7xl mx-auto px-4 py-16">
+        <h2 className="section-title">New Arrivals</h2>
+        <p className="section-sub">The latest books added to our shelf by readers like you.</p>
+        {books.length === 0 ? (
+          <p className="text-center opacity-70">No books yet. Be the first to add one!</p>
+        ) : (
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {books.map((b, i) => <BookCard key={b._id} book={b} index={i} />)}
+          </div>
+        )}
+        <div className="text-center mt-10">
+          <Link href="/books" className="btn btn-primary text-white">See All Books</Link>
+        </div>
+      </section>
+
