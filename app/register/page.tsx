@@ -13,3 +13,39 @@ function validatePassword(p: string) {
   return "";
 }
 
+export default function Register() {
+  const router = useRouter();
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+
+  const submit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const f = new FormData(e.currentTarget);
+    const password = String(f.get("password"));
+    const pwError = validatePassword(password);
+    if (pwError) {
+      setError(pwError);
+      return toast.error(pwError);
+    }
+    setError("");
+    setBusy(true);
+    const { error } = await authClient.signUp.email({
+      name: String(f.get("name")),
+      email: String(f.get("email")),
+      password,
+      image: String(f.get("photo")),
+    });
+    setBusy(false);
+    if (error) {
+      const msg = error.message || "Registration failed";
+      setError(msg);
+      return toast.error(msg);
+    }
+    toast.success("Registration successful! Please login.");
+    router.push("/login");
+  };
+
+  const google = async () => {
+    await authClient.signIn.social({ provider: "google", callbackURL: "/" });
+  };
+
