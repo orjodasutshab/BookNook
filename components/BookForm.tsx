@@ -39,3 +39,33 @@ export default function BookForm({ initial, user, submitLabel, onSubmit }: Props
     }
   };
 
+  return (
+    <form onSubmit={handle} className="space-y-4">
+      <input name="title" required defaultValue={initial?.title} placeholder="Book title" className="input input-bordered w-full" />
+      <input name="author" required defaultValue={initial?.author} placeholder="Author name" className="input input-bordered w-full" />
+      <div className="grid gap-4 sm:grid-cols-2">
+        <select name="category" required defaultValue={initial?.category || ""} className="select select-bordered w-full">
+          <option value="" disabled>Select category</option>
+          {CATEGORIES.map((c) => <option key={c}>{c}</option>)}
+        </select>
+        <input name="totalCopies" type="number" min={1} required defaultValue={initial?.totalCopies ?? 1}
+          placeholder="Total copies" className="input input-bordered w-full" />
+      </div>
+      <div>
+        <label className="label text-sm">Book image {initial && "(leave empty to keep the current one)"}</label>
+        <input name="image" type="file" accept="image/*" required={!initial} className="file-input file-input-bordered w-full" />
+      </div>
+      <textarea name="description" required defaultValue={initial?.description} rows={4}
+        placeholder="Short description" className="textarea textarea-bordered w-full" />
+      {user && (
+        <div className="grid gap-4 sm:grid-cols-2">
+          <input readOnly value={user.name} className="input input-bordered w-full" />
+          <input readOnly value={user.email} className="input input-bordered w-full" />
+        </div>
+      )}
+      <button disabled={busy} className="btn btn-primary text-white w-full">
+        {busy ? <span className="loading loading-spinner" /> : submitLabel}
+      </button>
+    </form>
+  );
+}
