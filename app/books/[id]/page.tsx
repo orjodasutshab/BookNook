@@ -1,11 +1,13 @@
 "use client";
 import { use, useEffect, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import Spinner from "@/components/Spinner";
 import Title from "@/components/Title";
 import { api, Book, fmtDate } from "@/lib/api";
 import { authClient } from "@/lib/auth-client";
+import { toWriterId } from "@/lib/profile";
 
 export default function BookDetails({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -66,13 +68,22 @@ export default function BookDetails({ params }: { params: Promise<{ id: string }
           <p className="text-lg opacity-70 mt-1">by {book.author}</p>
           <p className="mt-6 leading-relaxed">{book.description}</p>
           <div className="mt-6 space-y-1 opacity-80">
-            <p><b>Added by:</b> {book.addedBy.name} ({book.addedBy.email})</p>
+            <p>
+              <b>Added by:</b>{" "}
+              <Link href={`/writers/${toWriterId(book.addedBy.email)}`} className="link link-primary font-medium">
+                {book.addedBy.name}
+              </Link>{" "}
+              ({book.addedBy.email})
+            </p>
             <p><b>Added on:</b> {fmtDate(book.createdAt)}</p>
             <p><b>Copies available:</b> {book.availableCopies} / {book.totalCopies}</p>
           </div>
           <button onClick={openBorrow} disabled={unavailable} className="btn btn-primary text-white mt-8">
             {unavailable ? "Not Available" : "Borrow This Book"}
           </button>
+          <Link href={`/writers/${toWriterId(book.addedBy.email)}`} className="btn btn-outline btn-primary mt-8 ml-3">
+            ✍️ Writer Profile
+          </Link>
         </div>
       </div>
 

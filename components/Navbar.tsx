@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import { authClient } from "@/lib/auth-client";
 import Logo from "./Logo";
 import Avatar from "./Avatar";
+import { toWriterId } from "@/lib/profile";
 
 export default function Navbar() {
   const { data: session, isPending } = authClient.useSession();
@@ -86,6 +87,7 @@ export default function Navbar() {
             <ul tabIndex={0} className="menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-56 p-2 shadow">
               <li className="px-3 py-2 font-semibold pointer-events-none">{user.name}</li>
               <li><Link href="/profile">My Profile</Link></li>
+              <li><Link href={`/writers/${toWriterId(user.email)}`}>Writer Profile</Link></li>
               <li><button onClick={logout}>Logout</button></li>
             </ul>
           </div>

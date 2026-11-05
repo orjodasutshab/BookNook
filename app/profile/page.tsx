@@ -7,6 +7,7 @@ import Spinner from "@/components/Spinner";
 import Title from "@/components/Title";
 import Avatar from "@/components/Avatar";
 import { authClient } from "@/lib/auth-client";
+import { toWriterId } from "@/lib/profile";
 
 export default function Profile() {
   const { data: session, isPending } = authClient.useSession();
@@ -57,6 +58,7 @@ export default function Profile() {
           {!editing ? (
             <div className="flex flex-wrap justify-center gap-3 mt-5">
               <button onClick={openEdit} className="btn btn-primary text-white">✏️ Edit Profile</button>
+              <Link href={`/writers/${toWriterId(u.email)}`} className="btn btn-outline btn-primary">✍️ Writer Profile</Link>
               <Link href="/add-book" className="btn btn-outline btn-primary">+ Add Book</Link>
               <Link href="/my-books" className="btn btn-outline btn-primary">My Books</Link>
               <Link href="/my-borrows" className="btn btn-outline btn-primary">My Borrows</Link>
