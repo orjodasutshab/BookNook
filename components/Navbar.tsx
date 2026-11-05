@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { authClient } from "@/lib/auth-client";
 import Logo from "./Logo";
+import Avatar from "./Avatar";
 
 export default function Navbar() {
   const { data: session, isPending } = authClient.useSession();
@@ -79,14 +80,8 @@ export default function Navbar() {
           <span className="loading loading-spinner loading-sm"></span>
         ) : user ? (
           <div className="dropdown dropdown-end">
-            <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
-              <div className="w-10 rounded-full ring ring-primary ring-offset-2 ring-offset-base-100">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={user.image || `https://api.dicebear.com/9.x/initials/svg?seed=${encodeURIComponent(user.name)}`}
-                  alt={user.name}
-                />
-              </div>
+            <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
+              <Avatar src={user.image} name={user.name} size={40} />
             </div>
             <ul tabIndex={0} className="menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-56 p-2 shadow">
               <li className="px-3 py-2 font-semibold pointer-events-none">{user.name}</li>

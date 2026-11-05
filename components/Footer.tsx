@@ -13,36 +13,48 @@ const IgIcon = () => (
 
 export default function Footer() {
   return (
-    <footer className="bg-base-200 mt-16">
-      <div className="max-w-7xl mx-auto px-4 py-12 grid gap-8 md:grid-cols-3">
+    <footer className="bg-base-200 mt-20 border-t border-base-300">
+      <div className="max-w-7xl mx-auto px-6 py-16 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
         <div>
-          <Logo />
-          <p className="mt-3 opacity-70 max-w-xs">
-            A small online library where you add a book, borrow a book and return a book.
+          <Logo size="text-3xl" />
+          <p className="mt-4 opacity-70 max-w-xs leading-relaxed">
+            A small online library where you add a book, borrow a book and return a book. Made for readers across Bangladesh.
           </p>
+          <div className="flex gap-3 mt-6">
+            <a href="https://x.com" target="_blank" rel="noreferrer" aria-label="X" className="btn btn-circle btn-sm btn-outline hover:btn-primary"><XIcon /></a>
+            <a href="https://facebook.com" target="_blank" rel="noreferrer" aria-label="Facebook" className="btn btn-circle btn-sm btn-outline hover:btn-primary"><FbIcon /></a>
+            <a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram" className="btn btn-circle btn-sm btn-outline hover:btn-primary"><IgIcon /></a>
+          </div>
         </div>
         <div>
-          <h4 className="font-semibold mb-3">Quick Links</h4>
-          <ul className="space-y-2 opacity-80">
+          <h4 className="font-bold text-lg mb-4">Explore</h4>
+          <ul className="space-y-3 opacity-80">
+            <li><Link href="/" className="hover:text-primary">Home</Link></li>
             <li><Link href="/books" className="hover:text-primary">All Books</Link></li>
             <li><Link href="/add-book" className="hover:text-primary">Add Book</Link></li>
+          </ul>
+        </div>
+        <div>
+          <h4 className="font-bold text-lg mb-4">My Account</h4>
+          <ul className="space-y-3 opacity-80">
+            <li><Link href="/profile" className="hover:text-primary">My Profile</Link></li>
+            <li><Link href="/my-books" className="hover:text-primary">My Books</Link></li>
             <li><Link href="/my-borrows" className="hover:text-primary">My Borrows</Link></li>
           </ul>
         </div>
         <div>
-          <h4 className="font-semibold mb-3">Contact</h4>
-          <p className="opacity-80">support@booknook.app</p>
-          <p className="opacity-80">+880 1700-000000</p>
-          <p className="opacity-80 mb-4">Dhaka, Bangladesh</p>
-          <div className="flex gap-4">
-            <a href="https://x.com" target="_blank" rel="noreferrer" aria-label="X" className="hover:text-primary"><XIcon /></a>
-            <a href="https://facebook.com" target="_blank" rel="noreferrer" aria-label="Facebook" className="hover:text-primary"><FbIcon /></a>
-            <a href="https://instagram.com" target="_blank" rel="noreferrer" aria-label="Instagram" className="hover:text-primary"><IgIcon /></a>
-          </div>
+          <h4 className="font-bold text-lg mb-4">Contact</h4>
+          <ul className="space-y-3 opacity-80">
+            <li>📍 Dhaka, Bangladesh</li>
+            <li>✉️ support@booknook.app</li>
+            <li>📞 +880 1700-000000</li>
+            <li>🕒 Open every day, 24/7</li>
+          </ul>
         </div>
       </div>
-      <div className="border-t border-base-300 text-center py-4 text-sm opacity-70">
-        © {new Date().getFullYear()} BookNook. All rights reserved.
+      <div className="border-t border-base-300 py-5 px-6 flex flex-col sm:flex-row justify-between items-center gap-2 text-sm opacity-70 max-w-7xl mx-auto">
+        <span>© {new Date().getFullYear()} BookNook. All rights reserved.</span>
+        <span>Add a book · Borrow a book · Return a book</span>
       </div>
     </footer>
   );

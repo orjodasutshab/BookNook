@@ -44,7 +44,7 @@ export default async function Home() {
         {books.length === 0 ? (
           <p className="text-center opacity-70">No books yet. Be the first to add one!</p>
         ) : (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-2 gap-3 sm:gap-6 lg:grid-cols-3">
             {books.map((b, i) => <BookCard key={b._id} book={b} index={i} />)}
           </div>
         )}
