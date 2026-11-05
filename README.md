@@ -8,7 +8,7 @@
 
 <br/>
 
-### 🌐 Live Site: [https://booknook-silk.vercel.app](https://booknook-silk.vercel.app)
+### 🌐 Live Site: [https://booknook-bd.vercel.app](https://booknook-bd.vercel.app)
 
 <br/>
 
