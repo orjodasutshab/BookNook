@@ -13,7 +13,7 @@ export default function BookCard({ book, index = 0 }: { book: Book; index?: numb
       transition={{ duration: 0.4, delay: (index % 3) * 0.08 }}
       className="group card bg-base-100 border border-base-300 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 h-full overflow-hidden"
     >
-      <figure className="relative aspect-[2/3] bg-base-200 overflow-hidden">
+      <figure className="relative h-48 sm:h-72 bg-base-200 overflow-hidden">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={book.image}
