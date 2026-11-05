@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=venom&height=260&color=gradient&customColorList=12,20,24,30&text=BookNook&fontSize=84&fontColor=ffffff&fontAlignY=42&stroke=ffffff&strokeWidth=2&desc=Add%20a%20book.%20Borrow%20a%20book.%20Return%20a%20book.&descSize=22&descAlignY=66&animation=twinkling" alt="BookNook banner" width="100%" />
+<img src="https://capsule-render.vercel.app/api?type=waving&height=250&color=gradient&customColorList=12,20,24&section=header&text=BookNook&fontSize=80&fontColor=ffffff&fontAlignY=38&desc=Add%20a%20book.%20Borrow%20a%20book.%20Return%20a%20book.&descSize=22&descAlignY=60&animation=fadeIn" alt="BookNook banner" width="100%" />
 
 <a href="https://github.com/orjodasutshab/BookNook">
   <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=22&pause=1200&color=7C3AED&center=true&vCenter=true&width=640&lines=A+small+online+library+for+everyone;Borrow+books+for+a+few+days;Track+every+book+you+borrowed;Built+with+Next.js%2C+BetterAuth+and+MongoDB" alt="Typing animation" />
