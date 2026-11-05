@@ -11,14 +11,14 @@ export default function BookCard({ book }: { book: Book; index?: number }) {
   const fallback = `https://placehold.co/400x600/${colour}/ffffff/png?text=${encodeURIComponent((book.title || "Book").replace(/(.{1,14})(\s|$)/g, "$1\n").trim())}`;
 
   return (
-    <div className="card bg-base-100 border border-base-300 shadow-md h-full overflow-hidden">
+    <div className="group card bg-base-100 border border-base-300 shadow-md h-full overflow-hidden transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:border-primary/40">
       <figure className="relative h-56 sm:h-[400px] bg-base-200 overflow-hidden">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={broken || !book.image ? fallback : book.image}
           alt={book.title}
           onError={() => setBroken(true)}
-          className="h-full w-full object-cover"
+          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
         <span className="badge badge-primary absolute top-2 left-2 text-xs">{book.category}</span>
         {soldOut && (
@@ -26,7 +26,7 @@ export default function BookCard({ book }: { book: Book; index?: number }) {
         )}
       </figure>
       <div className="card-body p-3 sm:p-5 gap-1">
-        <h3 className="font-bold text-sm sm:text-lg leading-snug line-clamp-2 min-h-[2.5rem] sm:min-h-[3.5rem]">
+        <h3 className="font-bold text-sm sm:text-lg leading-snug line-clamp-2 min-h-[2.5rem] sm:min-h-[3.5rem] transition-colors duration-300 group-hover:text-primary">
           {book.title}
         </h3>
         <p className="opacity-70 text-xs sm:text-sm line-clamp-1">by {book.author}</p>
