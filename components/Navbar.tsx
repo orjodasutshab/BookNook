@@ -28,6 +28,8 @@ export default function Navbar() {
     document.documentElement.setAttribute("data-theme", t);
   };
 
+  const closeMenu = () => (document.activeElement as HTMLElement | null)?.blur();
+
   const logout = async () => {
     await authClient.signOut();
     toast.success("Logged out successfully");
@@ -73,22 +75,62 @@ export default function Navbar() {
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">{navItems}</ul>
       </div>
-      <div className="navbar-end gap-2">
-        <button onClick={toggleTheme} className="btn btn-ghost btn-circle" aria-label="Toggle theme">
-          {theme === "light" ? "🌙" : "☀️"}
+      <div className="navbar-end gap-2 sm:gap-3">
+        <button
+          onClick={toggleTheme}
+          aria-label="Toggle theme"
+          title={theme === "light" ? "Switch to dark mode" : "Switch to light mode"}
+          className="w-11 h-11 rounded-full bg-base-200 border border-base-300 flex items-center justify-center hover:bg-base-300 hover:scale-105 active:scale-95 transition-all duration-200"
+        >
+          {theme === "light" ? (
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-5 h-5 text-indigo-500" fill="currentColor">
+              <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
+            </svg>
+          ) : (
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-5 h-5 text-amber-400" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+              <circle cx="12" cy="12" r="4" fill="currentColor" />
+              <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+            </svg>
+          )}
         </button>
+
         {isPending ? (
           <span className="loading loading-spinner loading-sm"></span>
         ) : user ? (
           <div className="dropdown dropdown-end">
-            <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
-              <Avatar src={user.image} name={user.name} size={40} />
+            <div
+              tabIndex={0}
+              role="button"
+              className="flex items-center gap-2 h-11 pl-1 pr-2 sm:pr-3 rounded-full bg-base-200 border border-base-300 hover:bg-base-300 transition-colors cursor-pointer"
+            >
+              <span className="rounded-full ring-2 ring-primary/70">
+                <Avatar src={user.image} name={user.name} size={34} ring={false} />
+              </span>
+              <span className="hidden sm:block max-w-[110px] truncate text-sm font-semibold">
+                {user.name?.split(" ")[0]}
+              </span>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-4 h-4 opacity-60" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="m6 9 6 6 6-6" />
+              </svg>
             </div>
-            <ul tabIndex={0} className="menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-56 p-2 shadow">
-              <li className="px-3 py-2 font-semibold pointer-events-none">{user.name}</li>
-              <li><Link href="/profile">My Profile</Link></li>
-              <li><Link href={`/writers/${toWriterId(user.email)}`}>Writer Profile</Link></li>
-              <li><button onClick={logout}>Logout</button></li>
+            <ul
+              tabIndex={0}
+              className="menu dropdown-content bg-base-100 border border-base-300 rounded-2xl z-10 mt-3 w-64 p-2 shadow-xl"
+            >
+              <li className="pointer-events-none px-3 py-2">
+                <div className="flex items-center gap-3 p-0">
+                  <Avatar src={user.image} name={user.name} size={40} ring={false} />
+                  <div className="min-w-0">
+                    <p className="font-semibold truncate">{user.name}</p>
+                    <p className="text-xs opacity-60 truncate">{user.email}</p>
+                  </div>
+                </div>
+              </li>
+              <div className="divider my-0"></div>
+              <li><Link href="/profile" onClick={closeMenu}>👤 My Profile</Link></li>
+              <li><Link href={`/writers/${toWriterId(user.email)}`} onClick={closeMenu}>✍️ Writer Profile</Link></li>
+              <div className="divider my-0"></div>
+              <li><button onClick={() => { closeMenu(); logout(); }} className="text-error">⎋ Logout</button></li>
             </ul>
           </div>
         ) : (
