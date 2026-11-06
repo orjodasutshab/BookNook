@@ -12,13 +12,19 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
   if (!session?.user) return NextResponse.json({ message: "Please login first" }, { status: 401 });
 
   const { id } = await params;
-  let email = "";
-  try {
-    email = Buffer.from(id, "base64url").toString("utf8").trim();
-  } catch {}
-  if (!email.includes("@")) return NextResponse.json({ message: "Invalid writer link" }, { status: 400 });
-
   const d = db();
+
+  // 1) a custom profile link (e.g. /writers/orjodas), 2) the old long link made from the email
+  let email = "";
+  const named = await d.collection("profiles").findOne({ username: id.toLowerCase() });
+  if (named) email = String(named.email);
+  else {
+    try {
+      email = Buffer.from(id, "base64url").toString("utf8").trim();
+    } catch {}
+  }
+  if (!email.includes("@")) return NextResponse.json({ message: "Writer not found" }, { status: 404 });
+
   const [user, profile, books] = await Promise.all([
     d.collection("user").findOne({ email }, ci),
     d.collection("profiles").findOne({ email: email.toLowerCase() }),
@@ -50,6 +56,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
 
   return NextResponse.json({
     email: user?.email || email,
+    username: profile?.username || "",
     name,
     image,
     cover,

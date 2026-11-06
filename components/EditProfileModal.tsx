@@ -4,15 +4,16 @@ import toast from "react-hot-toast";
 import Avatar from "./Avatar";
 import { uploadImage } from "@/lib/api";
 import { authClient } from "@/lib/auth-client";
-import { BIO_MIN, verifyChecklist, WriterData } from "@/lib/profile";
+import { BIO_MIN, checkUsername, verifyChecklist, WriterData } from "@/lib/profile";
 
-type Props = { writer: WriterData; onClose: () => void; onSaved: () => void };
+type Props = { writer: WriterData; onClose: () => void; onSaved: (username: string) => void };
 
 export default function EditProfileModal({ writer, onClose, onSaved }: Props) {
   const [name, setName] = useState(writer.name);
   const [bio, setBio] = useState(writer.bio);
   const [location, setLocation] = useState(writer.location);
   const [website, setWebsite] = useState(writer.website);
+  const [username, setUsername] = useState(writer.username);
   const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [coverFile, setCoverFile] = useState<File | null>(null);
   const [photoPreview, setPhotoPreview] = useState<string | null>(writer.image);
@@ -38,6 +39,10 @@ export default function EditProfileModal({ writer, onClose, onSaved }: Props) {
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim()) return toast.error("Name cannot be empty");
+    if (username.trim()) {
+      const bad = checkUsername(username);
+      if (bad) return toast.error(bad);
+    }
     setBusy(true);
     try {
       let image = writer.image || "";
@@ -51,7 +56,7 @@ export default function EditProfileModal({ writer, onClose, onSaved }: Props) {
       const res = await fetch("/api/profile", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, image, cover, bio, location, website }),
+        body: JSON.stringify({ name, image, cover, bio, location, website, username }),
       });
       const body = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(body.message || "Could not save profile");
@@ -60,7 +65,7 @@ export default function EditProfileModal({ writer, onClose, onSaved }: Props) {
       if (body.verified && !writer.verified) {
         toast.success("🎉 Congratulations! Your profile is now verified.", { duration: 5000 });
       }
-      onSaved();
+      onSaved(body.username || "");
     } catch (err: any) {
       toast.error(err.message || "Something went wrong");
     } finally {
@@ -111,6 +116,23 @@ export default function EditProfileModal({ writer, onClose, onSaved }: Props) {
           <span className="label-text font-medium">Name</span>
           <input value={name} onChange={(e) => setName(e.target.value)} maxLength={60} required
             className="input input-bordered w-full mt-1" />
+        </label>
+
+        <label className="block">
+          <span className="label-text font-medium">Your profile link</span>
+          <div className="mt-1 flex items-stretch rounded-lg border border-base-300 overflow-hidden focus-within:border-primary">
+            <span className="bg-base-200 px-3 flex items-center text-xs sm:text-sm opacity-70 whitespace-nowrap">
+              {typeof window !== "undefined" ? window.location.host : ""}/writers/
+            </span>
+            <input
+              value={username}
+              onChange={(e) => setUsername(e.target.value.toLowerCase().replace(/\s/g, ""))}
+              maxLength={30}
+              placeholder="your-name"
+              className="input input-ghost focus:outline-none w-full rounded-none"
+            />
+          </div>
+          <span className="text-xs opacity-60">Letters, numbers, - or _ (3 to 30 characters). Leave empty to use the default link.</span>
         </label>
 
         <label className="block">

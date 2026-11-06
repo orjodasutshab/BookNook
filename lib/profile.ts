@@ -29,6 +29,16 @@ export function toWriterId(email: string) {
   return btoa(bin).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 }
 
+// Custom profile link, like linkedin.com/in/your-name
+const USERNAME_RE = /^[a-z0-9][a-z0-9_-]{1,28}[a-z0-9]$/;
+export function checkUsername(raw: string): string | null {
+  const u = raw.trim().toLowerCase();
+  if (!USERNAME_RE.test(u)) {
+    return "Profile link must be 3 to 30 characters: letters, numbers, - or _ (start and end with a letter or number)";
+  }
+  return null;
+}
+
 export type Achievement = {
   id: string;
   icon: string;
@@ -64,6 +74,7 @@ export function buildAchievements(s: {
 
 export type WriterData = {
   email: string;
+  username: string;
   name: string;
   image: string | null;
   cover: string;

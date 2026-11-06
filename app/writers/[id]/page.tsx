@@ -1,16 +1,19 @@
 "use client";
 import Link from "next/link";
 import { use, useCallback, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 import Spinner from "@/components/Spinner";
 import Title from "@/components/Title";
 import Avatar from "@/components/Avatar";
 import BookCard from "@/components/BookCard";
 import VerifiedBadge from "@/components/VerifiedBadge";
 import EditProfileModal from "@/components/EditProfileModal";
-import { verifyChecklist, WriterData } from "@/lib/profile";
+import { toWriterId, verifyChecklist, WriterData } from "@/lib/profile";
 
 export default function WriterProfile({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
+  const router = useRouter();
   const [writer, setWriter] = useState<WriterData | null>(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
@@ -23,12 +26,14 @@ export default function WriterProfile({ params }: { params: Promise<{ id: string
       if (!res.ok) throw new Error(body.message || "Could not load this profile");
       setWriter(body);
       setError("");
+      // always show the short custom link in the address bar
+      if (body.username && body.username !== id) router.replace(`/writers/${body.username}`);
     } catch (e: any) {
       setError(e.message);
     } finally {
       setLoading(false);
     }
-  }, [id]);
+  }, [id, router]);
 
   useEffect(() => { load(); }, [load]);
 
@@ -50,6 +55,7 @@ export default function WriterProfile({ params }: { params: Promise<{ id: string
     ? new Date(w.joinedAt).toLocaleDateString("en-GB", { month: "long", year: "numeric" })
     : null;
   const earned = w.achievements.filter((a) => a.earned).length;
+  const profileUrl = `${typeof window !== "undefined" ? window.location.origin : ""}/writers/${w.username || id}`;
 
   return (
     <section className="max-w-6xl mx-auto px-4 py-10">
@@ -120,6 +126,28 @@ export default function WriterProfile({ params }: { params: Promise<{ id: string
               </span>
             )}
           </div>
+
+          {w.isOwner && (
+            <div className="mt-6 flex flex-wrap items-center gap-x-3 gap-y-2 rounded-xl border border-dashed border-base-300 bg-base-200/60 px-4 py-3 text-sm">
+              <span className="opacity-70">Your profile link:</span>
+              <code className="font-semibold break-all">{profileUrl}</code>
+              <button
+                type="button"
+                className="btn btn-xs btn-outline btn-primary"
+                onClick={() => {
+                  navigator.clipboard?.writeText(profileUrl).then(
+                    () => toast.success("Profile link copied"),
+                    () => toast.error("Could not copy the link")
+                  );
+                }}
+              >
+                Copy
+              </button>
+              <button type="button" className="btn btn-xs btn-ghost" onClick={() => setEditing(true)}>
+                ✏️ Customise
+              </button>
+            </div>
+          )}
 
           <div className="mt-6 border-l-4 border-primary/60 pl-4 max-w-3xl">
             <p className="leading-relaxed sm:text-lg opacity-90">
@@ -233,7 +261,12 @@ export default function WriterProfile({ params }: { params: Promise<{ id: string
         <EditProfileModal
           writer={w}
           onClose={() => setEditing(false)}
-          onSaved={async () => { setEditing(false); await load(); }}
+          onSaved={async (u) => {
+            setEditing(false);
+            const target = u || toWriterId(w.email);
+            if (target !== id) router.replace(`/writers/${target}`);
+            else await load();
+          }}
         />
       )}
     </section>
