@@ -56,30 +56,35 @@ export default function WriterProfile({ params }: { params: Promise<{ id: string
       <Title name={`${w.name} | Writer`} />
 
       {/* cover + header */}
-      <div className="card bg-base-100 border border-base-300 shadow-md overflow-hidden">
-        <div className="h-44 sm:h-64 bg-gradient-to-r from-primary via-secondary to-accent">
+      <div className="card bg-base-100 border border-base-300 shadow-lg overflow-hidden">
+        <div className="relative h-44 sm:h-64 bg-gradient-to-r from-primary via-secondary to-accent">
           {w.cover && (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={w.cover} alt={`${w.name} cover`} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
           )}
+          <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/30 to-transparent" />
         </div>
-        <div className="px-5 sm:px-8 pb-8">
-          <div className="flex flex-col sm:flex-row sm:items-end gap-4 -mt-14 sm:-mt-16">
-            <div className="rounded-full bg-base-100 p-1 w-fit">
+
+        <div className="px-5 sm:px-10 pb-8">
+          {/* avatar sits on the cover edge, the button stays on the right */}
+          <div className="flex items-end justify-between gap-4 -mt-14 sm:-mt-16">
+            <div className="rounded-full bg-base-100 p-1.5 shadow-xl">
               <Avatar src={w.image} name={w.name} size={120} />
             </div>
-            <div className="flex-1 min-w-0 sm:pb-2 mt-1">
-              <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
-                <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight leading-tight break-words">{w.name}</h1>
-                <VerifiedBadge verified={w.verified} />
-              </div>
-              <p className="mt-1 text-sm sm:text-base opacity-70 break-all">{w.email}</p>
-            </div>
             {w.isOwner && (
-              <button onClick={() => setEditing(true)} className="btn btn-primary text-white sm:mb-2">
+              <button onClick={() => setEditing(true)} className="btn btn-primary text-white rounded-full px-5 mb-1">
                 ✏️ Edit Profile
               </button>
             )}
+          </div>
+
+          {/* name block is fully below the cover */}
+          <div className="mt-5">
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+              <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight leading-tight break-words">{w.name}</h1>
+              <VerifiedBadge verified={w.verified} />
+            </div>
+            <p className="mt-1.5 text-sm sm:text-base opacity-70 break-all">{w.email}</p>
           </div>
 
           <div className="flex flex-wrap gap-2 sm:gap-3 mt-5">
@@ -115,9 +120,11 @@ export default function WriterProfile({ params }: { params: Promise<{ id: string
             )}
           </div>
 
-          <p className="mt-4 leading-relaxed max-w-3xl">
-            {w.bio || (w.isOwner ? "You have not written a bio yet. Click Edit Profile to add one." : "This writer has not added a bio yet.")}
-          </p>
+          <div className="mt-6 border-l-4 border-primary/60 pl-4 max-w-3xl">
+            <p className="leading-relaxed sm:text-lg opacity-90">
+              {w.bio || (w.isOwner ? "You have not written a bio yet. Click Edit Profile to add one." : "This writer has not added a bio yet.")}
+            </p>
+          </div>
         </div>
       </div>
 
