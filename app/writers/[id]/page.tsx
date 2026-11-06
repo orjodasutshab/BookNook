@@ -68,12 +68,12 @@ export default function WriterProfile({ params }: { params: Promise<{ id: string
             <div className="rounded-full bg-base-100 p-1 w-fit">
               <Avatar src={w.image} name={w.name} size={120} />
             </div>
-            <div className="flex-1 sm:pb-2">
-              <div className="flex flex-wrap items-center gap-3">
-                <h1 className="text-2xl sm:text-3xl font-bold">{w.name}</h1>
+            <div className="flex-1 min-w-0 sm:pb-2 mt-1">
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+                <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight leading-tight break-words">{w.name}</h1>
                 <VerifiedBadge verified={w.verified} />
               </div>
-              <p className="opacity-70">{w.email}</p>
+              <p className="mt-1 text-sm sm:text-base opacity-70 break-all">{w.email}</p>
             </div>
             {w.isOwner && (
               <button onClick={() => setEditing(true)} className="btn btn-primary text-white sm:mb-2">
