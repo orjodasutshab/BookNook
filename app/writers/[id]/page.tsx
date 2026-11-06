@@ -82,14 +82,37 @@ export default function WriterProfile({ params }: { params: Promise<{ id: string
             )}
           </div>
 
-          <div className="flex flex-wrap gap-x-6 gap-y-2 mt-5 text-sm opacity-80">
-            {w.location && <span>📍 {w.location}</span>}
+          <div className="flex flex-wrap gap-2 sm:gap-3 mt-5">
+            {w.location && (
+              <span className="inline-flex items-center gap-2 rounded-full border border-base-300 bg-base-200 px-3 py-1.5 text-sm">
+                <svg viewBox="0 0 24 24" className="w-4 h-4 text-primary" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0z" /><circle cx="12" cy="10" r="3" />
+                </svg>
+                {w.location}
+              </span>
+            )}
             {w.website && (
-              <a href={w.website} target="_blank" rel="noopener noreferrer" className="link link-primary">
-                🔗 {w.website.replace(/^https?:\/\//, "")}
+              <a
+                href={w.website}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-full border border-base-300 bg-base-200 px-3 py-1.5 text-sm no-underline hover:border-primary hover:text-primary transition-colors"
+              >
+                <svg viewBox="0 0 24 24" className="w-4 h-4 text-primary" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 0 0-7.07-7.07l-1.5 1.5" />
+                  <path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 0 0 7.07 7.07l1.5-1.5" />
+                </svg>
+                <span className="truncate max-w-[220px] sm:max-w-xs">{w.website.replace(/^https?:\/\//, "").replace(/\/$/, "")}</span>
               </a>
             )}
-            {joined && <span>📅 Joined {joined}</span>}
+            {joined && (
+              <span className="inline-flex items-center gap-2 rounded-full border border-base-300 bg-base-200 px-3 py-1.5 text-sm">
+                <svg viewBox="0 0 24 24" className="w-4 h-4 text-primary" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="4" width="18" height="18" rx="2" /><path d="M16 2v4M8 2v4M3 10h18" />
+                </svg>
+                Joined {joined}
+              </span>
+            )}
           </div>
 
           <p className="mt-4 leading-relaxed max-w-3xl">
